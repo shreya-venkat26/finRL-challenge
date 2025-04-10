@@ -1,14 +1,11 @@
 from openai import OpenAI
 from langgraph.graph import StateGraph
-from dotenv import load_dotenv
-import os
-load_dotenv()
+from config import DEEPSEEK_API_KEY
 
-api_key = os.getenv("DEEPSEEK_API_KEY")
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
     # HAS A LIMIT FOR NOW (?)
-    api_key = "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"
+    api_key = DEEPSEEK_API_KEY
 )
 
 def deepseek_agent(prompt_text: str) -> str:
