@@ -30,7 +30,9 @@ def fetch_finnhub_news_and_sentiment():
         except Exception as e:
             print(f"[Finnhub] Error fetching news for {ticker}: {e}")
 
-        # quantitative analyst sentiment; TODO: extend to qualitative
+        # quantitative analyst sentiment;
+        # TODO: extend to quantitative
+        # TODO: extend to include far more tickers (see config.yaml)
         try:
             sentiment_url = f"{BASE_URL}/stock/recommendation?symbol={ticker}"
             sentiment_data = requests.get(sentiment_url, headers=HEADERS).json()
