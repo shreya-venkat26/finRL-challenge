@@ -1,7 +1,7 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from data_sources.fetch_finnhub_news import fetch_finnhub_news_and_sentiment
 from data_sources.fetch_web_news import fetch_scraped_news
-from qdrant_push import embed_and_store
+from push_to_qdrant import embed_and_store
 
 scheduler = BlockingScheduler()
 
