@@ -12,16 +12,32 @@ def fetch_yahoo_finance():
         for h in headlines:
             a = h.find("a")
             if a and a.text and a["href"]:
+                full_url = f"https://finance.yahoo.com{a['href']}"
+                summary = scrape_yahoo_summary(full_url)
                 articles.append({
                     'source': 'YahooFinance',
                     'headline': a.text.strip(),
-                    'summary': '',
-                    'url': f"https://finance.yahoo.com{a['href']}",
-                    'datetime': datetime.datetime.utcnow().timestamp()
+                    'summary': summary,
+                    'url': full_url,
+                    'datetime': datetime.datetime.now(datetime.timezone.utc).timestamp()
                 })
     except Exception as e:
-        print(f"[Yahoo] Error scraping Yahoo Finance: {e}")
+        print(f"Error scraping Yahoo Finance: {e}")
     return articles
+
+def scrape_yahoo_summary(url):
+    try:
+        resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
+        soup = BeautifulSoup(resp.content, "html.parser")
+        meta_desc = soup.find("meta", attrs={"name": "description"})
+        if meta_desc and meta_desc.get("content"):
+            return meta_desc["content"].strip()
+        paragraphs = soup.find_all("p")
+        if paragraphs:
+            return paragraphs[0].get_text().strip()
+    except Exception as e:
+        print(f"Failed to fetch Yahoo summary for {url}: {e}")
+    return ""
 
 def fetch_marketwatch():
     url = "https://www.marketwatch.com/latest-news"
@@ -39,10 +55,10 @@ def fetch_marketwatch():
                     'headline': h.text.strip(),
                     'summary': p.text.strip() if p else '',
                     'url': h['href'],
-                    'datetime': datetime.datetime.utcnow().timestamp()
+                    'datetime': datetime.datetime.now(datetime.timezone.utc).timestamp()
                 })
     except Exception as e:
-        print(f"[MarketWatch] Error scraping MarketWatch: {e}")
+        print(f"Error scraping MarketWatch: {e}")
     return articles
 
 def fetch_scraped_news():
