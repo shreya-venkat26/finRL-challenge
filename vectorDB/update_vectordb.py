@@ -15,8 +15,8 @@ def scheduled_job():
     all_articles = finnhub_data + scraped_data
     embed_and_store(all_articles)
 
-    print(f"[Ingestor] Ingested {len(all_articles)} new articles.")
+    print(f"Ingested {len(all_articles)} new articles.")
 
 if __name__ == "__main__":
-    print("[Ingestor] Starting 3-hour interval job...")
+    print("Starting 3-hour interval job...")
     scheduler.start()
